@@ -1,7 +1,8 @@
-package streamapi;
+package prog2_streamapi.src.main.java.streamapi;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Stream;
 
 /** Starter for the stream api task. */
 public class Main {
@@ -60,19 +61,13 @@ public class Main {
         Random r = new Random();
 
         // TODO
-        List<Integer> randomIntegers = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            randomIntegers.add(r.nextInt(10));
-        }
-
-        List<Integer> returnList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            if (randomIntegers.get(i) % 2 == 0) {
-                returnList.add(randomIntegers.get(i) * randomIntegers.get(i));
+        Stream<Integer> randomStream = Stream.generate(() -> r.nextInt(10)).limit(10);
+        return randomStream.filter(e -> {
+            if (e % 2 == 0) {
+                return true;
             }
-        }
-
-        return returnList;
+            return false;
+        }).map(e -> e*e).toList();
     }
 
     /**
