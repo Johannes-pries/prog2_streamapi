@@ -1,4 +1,4 @@
-package streamapi;
+package prog2_streamapi.src.main.java.streamapi;
 
 import java.io.InputStream;
 import java.util.*;
@@ -11,7 +11,7 @@ public class Main {
      * @param args command line parameters, not used
      */
     public static void main(String... args) {
-
+        System.out.println("");
         // Task I: Students
         System.out.println(
                 students(
@@ -21,7 +21,7 @@ public class Main {
                                 new Student("C", 60, Enrollment.ELT),
                                 new Student("D", 45, Enrollment.ARCH),
                                 new Student("E", 80, Enrollment.IFM))));
-
+        
         // Task II: Set of ECTS of all IFM students
 
         // Task III: Random
@@ -40,12 +40,7 @@ public class Main {
      */
     public static Integer students(List<Student> studentList) {
         // TODO
-        Integer sum = 0;
-        for (Student s : studentList) {
-            sum += s.cps();
-        }
-
-        return sum;
+        return studentList.stream().mapToInt(Student::cps).sum();
     }
 
     /**

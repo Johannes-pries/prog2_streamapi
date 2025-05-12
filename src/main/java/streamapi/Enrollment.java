@@ -1,4 +1,4 @@
-package streamapi;
+package prog2_streamapi.src.main.java.streamapi;
 
 /** Represent different study programmes. */
 public enum Enrollment {
