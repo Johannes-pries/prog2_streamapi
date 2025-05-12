@@ -1,7 +1,8 @@
-package streamapi;
+package prog2_streamapi.src.main.java.streamapi;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Stream;
 
 /** Starter for the stream api task. */
 public class Main {
@@ -17,6 +18,7 @@ public class Main {
         // Task II: Set of ECTS of all IFM students
 
         // Task III: Random
+        System.out.println(random());
 
         // Task IV+V: Resources
 
@@ -56,8 +58,16 @@ public class Main {
      * @return List of ten random integers (between 0 and 10)
      */
     public static List<Integer> random() {
+        Random r = new Random();
+
         // TODO
-        throw new UnsupportedOperationException();
+        Stream<Integer> randomStream = Stream.generate(() -> r.nextInt(10)).limit(10);
+        return randomStream.filter(e -> {
+            if (e % 2 == 0) {
+                return true;
+            }
+            return false;
+        }).map(e -> e*e).toList();
     }
 
     /**
