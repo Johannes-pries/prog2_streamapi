@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /** Starter for the stream api task. */
@@ -22,7 +24,7 @@ public class Main {
         // Task III: Random
 
         // Task IV+V: Resources
-        System.out.println(resources("file.txt"));
+        System.out.println(resources("streamapi/file.txt"));
     }
 
     /**
@@ -74,7 +76,21 @@ public class Main {
      */
     private static InputStream getResourceAsStream(String path) {
         // TODO
-        throw new UnsupportedOperationException();
+        try {
+            // Verwende den ClassLoader, um die Ressource zu laden
+            ClassLoader classLoader = Main.class.getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream(path);
+
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Datei nicht gefunden: " + path);
+            }
+
+            // Lies den Inhalt der Datei
+            return inputStream;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -89,30 +105,28 @@ public class Main {
      */
     public static String resources(String path) {
         // TODO
-        StringBuilder result = new StringBuilder();
+        
+        List<String> allLines = new ArrayList<>();
 
         try (InputStream stream = getResourceAsStream(path)) {
             BufferedReader r = new BufferedReader(new InputStreamReader(stream));
-
-            List<String> allLines = new ArrayList<>();
 
             String newLine = r.readLine();
             while (newLine != null) {
                 allLines.add(newLine);
                 newLine = r.readLine();
             }
-
-            for (int i = 1; i < allLines.size(); i++) {
-                String s = allLines.get(i);
-                if (s.startsWith("a") && !(s.length() < 2)) {
-                    result.append(allLines.get(i)).append("\n");
-                }
-            }
+            
+            allLines = allLines.stream()
+                    .filter(line -> line.startsWith("a") && line.length() >= 2)
+                    .toList();
 
         } catch (IOException e) {
             System.err.println("Ouch, that didn't work: \n" + e.getMessage());
         }
 
-        return result.toString();
+        return allLines.toString();
+
+        
     }
 }
